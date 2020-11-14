@@ -20,7 +20,7 @@ class Graph {
 
 		char letter(int i)
 		{
-			return 65 + i; //Chars are stored as int//65 is the ascii value of A
+			return 65 + i; // Chars are stored as int  // 65 is the ascii value of A
 		}
 
 		int pipeline_count()
@@ -42,7 +42,7 @@ class Graph {
 
 int main()
 {
-	enum Edges {A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z};
+	enum Vertices {A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z};
 	vector<int> v = {A,B,C,D,E};
 	vector<tuple<int, int, int>> e = {{A,B,2},{B,C,7},{C,E,9},{A,D,4},{D,E,8}};
 	Graph graph(v,e);
