@@ -30,7 +30,7 @@ class Graph {
             graph_file.close();
         }
 
-        int bredth_first_search (int source, int sink) {
+        bool breadth_first_search (int source, int sink) {
             int u,v;
             // Initializing All Nodes to unvisited
             for (u=0; u<nodes; u++) {
@@ -45,11 +45,10 @@ class Graph {
             u = search_queue.front();
             visited[u] = 2;
             search_queue.pop();
-                // Search all adjacent unvisited nodes v. If the capacity
-                // from u to v in the residual network is positive,
-                // enqueue v.
+            
+            //Enqueue all the nodes that can still allow resources to residual
             for (v=0; v<nodes; v++) {
-                if (visited[v]==0 && capacity[u][v]-flow[u][v]>0) 
+                if (visited[v]==0 && capacity[u][v]-residual[u][v]>0) 
                 {
                     search_queue.push(v);
                     visited[v] = 1;
@@ -57,58 +56,58 @@ class Graph {
                 }
             }
             }
-            // If the visited of the sink node is visited now,
-            // it means that we reached it.
-            return visited[sink] == 2;
+            //If the sink node has been visited then the breadth-first-search
+            //has found a path that can still take resources
+            return (visited[sink] == 2);
         }
 
         // Ford-Fulkerson Algorithm
 
-        int max_flow () {
-            int i,j,u;
+        int max_residual () {
+            
             int source = 0;
             int sink = nodes - 1;
-            // Initialize empty flow.
-            int max_flow = 0;
-            for (i=0; i<nodes; i++) {
-            for (j=0; j<nodes; j++) {
-                flow[i][j] = 0;
+            // Initialize empty residual.
+            int max_residual = 0;
+            for (int counter1 = 0; counter1 < nodes; counter1++) {
+                for (int counter2 = 0; counter2 < nodes; counter2++) {
+                    residual[counter1][counter2] = 0;
+                }
             }
-            }
-            // While there exists an augmenting path,
-            // increment the flow along this path.
-            while (bredth_first_search(source,sink)) {
-                // Determine the amount by which we can increment the flow.
+
+            //While the Breadth_First_Search finds a path that can handle resource, send the resources
+            while (breadth_first_search(source,sink)) {
+
+            //Determine the maximum amount of resource that can be transfered
             int increment = INT8_MAX;
-            for (u=nodes-1; path[u]>=0; u=path[u]) {
-                increment = INT8_MAX < capacity[path[u]][u]-flow[path[u]][u] ? INT8_MAX : capacity[path[u]][u]-flow[path[u]][u];
+            for (int counter = nodes-1; path[counter] >= 0; counter = path[counter]) {
+                increment = INT8_MAX < capacity[path[counter]][counter]-residual[path[counter]][counter] ? INT8_MAX : capacity[path[counter]][counter]-residual[path[counter]][counter];
             }
-                // Now increment the flow.
-            for (u=nodes-1; path[u]>=0; u=path[u]) {
-                flow[path[u]][u] += increment;
-                flow[u][path[u]] -= increment;
+            
+            //Transfer maximum resources down the augmented path  and updated the residual graph
+            for (int counter = nodes-1; path[counter]>=0; counter = path[counter]) {
+                residual[path[counter]][counter] += increment;
+                residual[counter][path[counter]] -= increment;
             }
-            max_flow += increment;
+            max_residual += increment;
             }
-            // No augmenting path anymore. We are done.
-            cout << "The maximum flow of the graph is: " << max_flow << endl;
-            return max_flow;
+            // At the end of the while loop there are no more residual graphs
+            cout << "The maximum residual of the graph is: " << max_residual << endl;
+            return max_residual;
         }
 
-
-
     public:
-        queue <int> search_queue;
-        int capacity[100][100];
-        int nodes;
-        int edges;
-        int flow[10][10];     // flow matrix
-        int visited[10]; // needed for breadth-first search               
-        int path[10];  // array to store augmenting path
+        queue <int> search_queue;//The Queue used with the Breadth First Search
+        int nodes;               //The Number of Nodes of the Graph
+        int edges;               //The Number of Edges of the Graph
+        int capacity[100][100];  //The Capacity of the Graph
+        int residual[100][100];  //Represents the residual flow of the graph 
+        int visited[100];        //Stores the status of nodes that have been visited during breadth-first-traversal
+        int path[100];           //Stores the Augmented Path
 };
 
 int main () {
     Graph g;    
-    g.max_flow();
+    g.max_residual();
     return 0;
 }
