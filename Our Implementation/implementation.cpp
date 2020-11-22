@@ -31,10 +31,10 @@ class Graph {
         }
 
         bool breadth_first_search (int source, int sink) {
-            int u,v;
+            int a,b;
             // Initializing All Nodes to unvisited
-            for (u=0; u<nodes; u++) {
-                visited[u] = 0;
+            for (a = 0; a < nodes; a++) {
+                visited[a] = 0;
             }
             
             search_queue.push(source);
@@ -42,17 +42,17 @@ class Graph {
 
             path[source] = -1;
             while (!search_queue.empty()) {
-            u = search_queue.front();
-            visited[u] = 2;
+            a = search_queue.front();
+            visited[a] = 2;
             search_queue.pop();
             
             //Enqueue all the nodes that can still allow resources to residual
-            for (v=0; v<nodes; v++) {
-                if (visited[v]==0 && capacity[u][v]-residual[u][v]>0) 
+            for (b = 0; b < nodes; b++) {
+                if (visited[b]==0 && capacity[a][b]-residual[a][b]>0) 
                 {
-                    search_queue.push(v);
-                    visited[v] = 1;
-                    path[v] = u;
+                    search_queue.push(b);
+                    visited[b] = 1;
+                    path[b] = a;
                 }
             }
             }
