@@ -79,17 +79,17 @@ class Graph {
             while (breadth_first_search(source,sink)) {
 
             //Determine the maximum amount of resource that can be transfered
-            int increment = INT8_MAX;
+            int flow = INT8_MAX;
             for (int counter = nodes-1; path[counter] >= 0; counter = path[counter]) {
-                increment = INT8_MAX < capacity[path[counter]][counter]-residual[path[counter]][counter] ? INT8_MAX : capacity[path[counter]][counter]-residual[path[counter]][counter];
+                flow = INT8_MAX < capacity[path[counter]][counter]-residual[path[counter]][counter] ? INT8_MAX : capacity[path[counter]][counter]-residual[path[counter]][counter];
             }
             
             //Transfer maximum resources down the augmented path  and updated the residual graph
             for (int counter = nodes-1; path[counter]>=0; counter = path[counter]) {
-                residual[path[counter]][counter] += increment;
-                residual[counter][path[counter]] -= increment;
+                residual[path[counter]][counter] += flow;
+                residual[counter][path[counter]] -= flow;
             }
-            maximum_flow += increment;
+            maximum_flow += flow;
             }
             // At the end of the while loop there are no more residual graphs
             cout << "The maximum flow of the graph is: " << maximum_flow << endl;
