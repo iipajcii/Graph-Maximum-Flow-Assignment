@@ -63,12 +63,12 @@ class Graph {
 
         // Ford-Fulkerson Algorithm
 
-        int max_residual () {
+        int Ford_Fulkerson () {
             
             int source = 0;
             int sink = nodes - 1;
             // Initialize empty residual.
-            int max_residual = 0;
+            int maximum_flow = 0;
             for (int counter1 = 0; counter1 < nodes; counter1++) {
                 for (int counter2 = 0; counter2 < nodes; counter2++) {
                     residual[counter1][counter2] = 0;
@@ -89,11 +89,11 @@ class Graph {
                 residual[path[counter]][counter] += increment;
                 residual[counter][path[counter]] -= increment;
             }
-            max_residual += increment;
+            maximum_flow += increment;
             }
             // At the end of the while loop there are no more residual graphs
-            cout << "The maximum residual of the graph is: " << max_residual << endl;
-            return max_residual;
+            cout << "The maximum residual of the graph is: " << maximum_flow << endl;
+            return maximum_flow;
         }
 
     public:
@@ -108,6 +108,6 @@ class Graph {
 
 int main () {
     Graph g;    
-    g.max_residual();
+    g.Ford_Fulkerson();
     return 0;
 }
