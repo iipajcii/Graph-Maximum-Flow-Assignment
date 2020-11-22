@@ -92,7 +92,7 @@ class Graph {
             maximum_flow += increment;
             }
             // At the end of the while loop there are no more residual graphs
-            cout << "The maximum residual of the graph is: " << maximum_flow << endl;
+            cout << "The maximum flow of the graph is: " << maximum_flow << endl;
             return maximum_flow;
         }
 
